@@ -1,0 +1,34 @@
+{
+  "name": "archimedes",
+  "version": "0.1.0",
+  "description": "A smart mirror for the internet of things.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lazamar/Archimedes.git"
+  },
+  "keywords": [
+    "Archimedes",
+    "Smart",
+    "Mirror",
+    "Internet",
+    "of",
+    "things",
+    "Raspberry",
+    "Pi",
+    "Electron",
+    "Arm"
+  ],
+  "author": "Marcelo Lazaroni - lazaronijunior@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lazamar/Archimedes/issues"
+  },
+  "homepage": "https://github.com/lazamar/Archimedes#readme",
+  "devDependencies": {
+    "electron": "^0.4.1"
+  }
+}
