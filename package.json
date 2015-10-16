@@ -29,6 +29,7 @@
   },
   "homepage": "https://github.com/lazamar/Archimedes#readme",
   "devDependencies": {
-    "electron": "^0.4.1"
+    "electron": "^0.4.1",
+    "request": "^2.65.0"
   }
 }

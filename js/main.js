@@ -1,4 +1,6 @@
-// This file is the JavaScript bit of the application that goes outside of angularJS.
+// Module to make AJAX requests.
+  var request = require('request');
+
 
 //Voice recognition bit.
 if (annyang) {
@@ -25,30 +27,57 @@ function printArgs(){
   for (var i = 0; i < arguments.length; i++) {
     console.log('Argument '+i+': '+arguments[i]);
   }
-  var greet;
-  if(greet = arguments[0].match('/hello\s(.*)/i') && greet.length > 0){
-    console.log('Hello to you too' + greet);
-  }
+  question = arguments[0];
+  ask(question).then(function(response){
+    console.log("Yes it is working!");
+    showOnScreen(response);
+  })
 }
 // Command functions
 function showCalendar(day){
   console.log("Imagine a calendar is being shown");
 }
 function helloWorld() {
-  hello = document.createElement("h1");
-  hello.className = "animated zoomInDown"
-  hello.innerHTML = "Hello there!"
-  document.body.appendChild(hello);
-  console.log("Hello?");
+  showOnScreen("Hello there");
 }
 function weather(day){
   console.log('Imagine the weather for '+ day+' is appearing.');
 }
 function mirror(adjective){
-  sentence = document.createElement("h1");
-  sentence.className = "animated zoomInDown"
-  sentence.innerHTML = "No, my friend. You are the most "+ adjective;
-  document.body.appendChild(sentence);
-  console.log("Yes!");
+  showOnScreen("No, my friend. You are the most "+ adjective);
 }
+
+function showOnScreen(text){
+  var textElem = document.createElement("h1");
+  textElem.className = "animated zoomInDown"
+  textElem.innerHTML = text;
+  document.body.appendChild(textElem);
+}
+
+
+
+function ask(question){
+  var aPromise = Promise.defer()
+  request.post('http://demo.vhost.pandorabots.com/pandora/talk?botid=b0dafd24ee35a477',
+   {form:{'submit':'Ask Chomsky', 'input': question}},
+   function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+      result = body.match(/<b>Chomsky:<\/b>\s*<br\/><br\/>\s*([^<]*)/);
+      response = result[1].trim();
+      console.log(response) // Show the HTML for the Google homepage.
+      aPromise.resolve(response);
+    }
+  });
+  return aPromise.promise;
+}
+
+
+// ask("Do you work?").then(function(response){
+//   console.log("Yes it is working!");
+// })
+
+
+
+
+
 console.log("Hi?");
