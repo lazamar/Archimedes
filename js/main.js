@@ -6,7 +6,9 @@ if (annyang) {
   var commands = {
     'hello (world)': helloWorld,
     'What is the weather (like) (for) (gonna be) (going to be) (:day)': weather,
-    'mirror mirror is there (anyone) (anybody) more :adjective than me' : mirror
+    'mirror mirror is there (anyone) (anybody) more :adjective than me' : mirror,
+    'calculate :quarter stats': {'regexp': /^calculate (January|March|July|October) stats$/, 'callback': printArgs},
+    '*anything': {'regexp': /^.*Archimedes\s(.*)$/, 'callback': printArgs},
 
   };
 
@@ -19,7 +21,15 @@ if (annyang) {
   // Start listening.
   annyang.start();
 }
-
+function printArgs(){
+  for (var i = 0; i < arguments.length; i++) {
+    console.log('Argument '+i+': '+arguments[i]);
+  }
+  var greet;
+  if(greet = arguments[0].match('/hello\s(.*)/i') && greet.length > 0){
+    console.log('Hello to you too' + greet);
+  }
+}
 // Command functions
 function showCalendar(day){
   console.log("Imagine a calendar is being shown");
