@@ -1,6 +1,6 @@
 // Module to make AJAX requests.
   var request = require('request');
-
+// Wolfram app-id GQ7KXY-QRRKAQY3EH
 
 //Voice recognition bit.
 if (annyang) {
@@ -9,7 +9,7 @@ if (annyang) {
     'hello (world)': helloWorld,
     'What is the weather (like) (for) (gonna be) (going to be) (:day)': weather,
     'mirror mirror is there (anyone) (anybody) more :adjective than me' : mirror,
-    'calculate :quarter stats': {'regexp': /^calculate (January|March|July|October) stats$/, 'callback': printArgs},
+    'Ok show me *quarter': showAgenda,
     '*anything': {'regexp': /^.*Archimedes\s(.*)$/, 'callback': printArgs},
 
   };
@@ -30,6 +30,8 @@ function printArgs(){
   question = arguments[0];
   ask(question).then(function(response){
     console.log("Yes it is working!");
+    response = response.replace(/Chomsky/gi,"Archimedes");
+    response = response.replace(/Peter/gi,"Marcelo");
     showOnScreen(response);
   })
 }
@@ -48,10 +50,14 @@ function mirror(adjective){
 }
 
 function showOnScreen(text){
+  var oldElem = document.getElementsByTagName("h1")[0]
+  oldElem.className = "animated fadeOut";
+  setTimeout(function(){document.body.removeChild(oldElem)}, 1000);
   var textElem = document.createElement("h1");
-  textElem.className = "animated zoomInDown"
   textElem.innerHTML = text;
+  textElem.className = "animated fadeIn";
   document.body.appendChild(textElem);
+
 }
 
 
@@ -71,13 +77,20 @@ function ask(question){
   return aPromise.promise;
 }
 
-
-// ask("Do you work?").then(function(response){
-//   console.log("Yes it is working!");
-// })
-
-
-
-
-
+function showAgenda(){
+  var agenda = document.createElement("div");
+  agenda.id = "agenda";
+  agenda.className = "animated zoomInUp";
+  var weekday = document.createElement("h2");
+  weekday.innerHTML = "Sat 17 Oct";
+  agenda.appendChild(weekday);
+  var activity = document.createElement("p");
+  activity.innerHTML = "Absolutely nothing.";
+  agenda.appendChild(activity);
+  document.body.appendChild(agenda);
+  setTimeout(function(){
+    agenda.className = "animated fadeOutDown";
+    setTimeout(function(){ document.body.removeChild(agenda)},1500);
+  },3000);
+}
 console.log("Hi?");

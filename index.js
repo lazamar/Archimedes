@@ -30,8 +30,8 @@ app.on('ready', function() {
     // Browser window options. See all at http://electron.atom.io/docs/v0.33.0/api/browser-window/
     width: 800,
     height: 700,
-    // kiosk: true,
-    // frame: false,
+    kiosk: true,
+    frame: false,
   });
 
   // and load the index.html of the app.
@@ -39,7 +39,7 @@ app.on('ready', function() {
   // mainWindow.loadUrl('http://localhost:8080');
 
   // Open the DevTools.
-  mainWindow.openDevTools();
+  // mainWindow.openDevTools();
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function() {

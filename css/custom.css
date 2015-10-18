@@ -1,0 +1,37 @@
+h1{
+  width: 17em;
+  height: 7em;
+  position: absolute;
+  margin: auto;
+  top: 25px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: gold !important;
+  font-size: 50px;
+}
+body{
+  color: black;
+}
+
+#agenda{
+  border: 2px solid #F5F5F5;
+  color: #F5F5F5;
+  font-size: 35px;
+  width: 520px;
+  height: 140px;
+  position: absolute;
+  right: 20px;
+  top: 220px;
+}
+h2{
+  color: inherit;
+  font-size: 30px;
+  border: none;
+  text-align: right;
+  padding: 0 20px 0 0;
+  margin: 0;
+}
+p{
+  text-align: center;
+}
