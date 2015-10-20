@@ -95,9 +95,8 @@ function showAgenda(){
 }
 
 Geo.ready().then(function(status){
-  console.log("Ready!");
+  document.getElementById('weather').style.animationName = 'fade-in';
   document.getElementById('w-icon').className = "wi wi-"+ status.icon + " wi-fi";
   document.getElementById('w-temp').innerHTML = status.temp + '&deg;';
   document.getElementById('w-desc').innerHTML = status.description;
-
 })

@@ -52,16 +52,20 @@ p{
 
 @keyframes fade-in{
   0%   {opacity: 0;}
-  30%   {opacity: 0;}
   100% {opacity: 1;}
+}
+
+@keyframes fade-out{
+  0% {opacity: 1;}
+  100% {opacity: 0;}
 }
 #weather{
   position: fixed;
   top: 0px;
   left: 0px;
   padding: 20px;
-  animation-name: fade-in;
-  animation-duration: 4s;
+  // animation-name: fade-in;
+  animation-duration: 3s;
   i{
     font-size: 100px;
     display: block;

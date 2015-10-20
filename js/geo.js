@@ -9,7 +9,10 @@ var Geo = (function(){
     lat = coord.coords.latitude;
     lon = coord.coords.longitude;
     //Now that we have the coordinates we can get our first status.
-    updateStatus();
+    updateStatus().then(function(responseStatus){
+      // After getting the status let's inform that the module is ready.
+      ready.resolve(responseStatus);
+    });
   }
 
   function updateStatus(){
@@ -29,7 +32,6 @@ var Geo = (function(){
       lastCheck = Date.now();
       var responseStatus = prepareResponseStatus();
       statusPromise.resolve(responseStatus);
-      ready.resolve(responseStatus);
     })
     return statusPromise.promise
   }
@@ -128,6 +130,7 @@ var Geo = (function(){
   navigator.geolocation.getCurrentPosition(getCoords);
 
   return {
+    // Will return a promise that will be resolved with a status.
     updateStatus: function(){
       return updateStatus();
     },
@@ -137,6 +140,8 @@ var Geo = (function(){
     lastCheck: function(){
       return lastCheck;
     },
+    // The promise will be resolved with the first status
+    // response the module received.
     ready:function(){
       return ready.promise;
     }
