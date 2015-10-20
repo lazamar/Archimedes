@@ -39,7 +39,7 @@ app.on('ready', function() {
   // mainWindow.loadUrl('http://localhost:8080');
 
   // Open the DevTools.
-  mainWindow.openDevTools();
+  // mainWindow.openDevTools();
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function() {
@@ -47,6 +47,5 @@ app.on('ready', function() {
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
     mainWindow = null;
-
   });
 });

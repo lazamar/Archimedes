@@ -13,8 +13,8 @@ var Geo = (function(){
   }
 
   function getWeather(lat, lon){
-    weatherUrl = 'http://api.openweathermap.org/data/2.5/weather?lat=' +
-    lat+'&lon='+lon+'&APPID='+AppKeys.weatherAPI;
+    weatherUrl = 'http://api.openweathermap.org/data/2.5/weather?'+
+    'units=metric&lat='+lat+'&lon='+lon+'&APPID='+AppKeys.weatherAPI;
 
     console.log('Calling weather');
     //Get get weather from lat and long
@@ -23,6 +23,10 @@ var Geo = (function(){
       var response = JSON.parse(body);
       weatherId = response.weather[0].id;
       console.log('Weather will be:');
+      document.getElementById('w-icon').className = "wi wi-"+ locationObj.weather.desc[weatherId].icon + " wi-fi";
+      document.getElementById('w-temp').innerHTML = response.main.temp + '&deg;';
+      document.getElementById('w-desc').innerHTML = locationObj.weather.desc[weatherId].label;
+
       console.log(locationObj.weather.desc[weatherId].label);
     })
     return locationObj;

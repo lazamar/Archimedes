@@ -2173,10 +2173,14 @@ Copyright (c) 2015 Daniel Eden
 @font-face {
   font-family: 'Alegreya-Thin';
   src: url("../resources/fonts/AlegreyaSansSC-Thin.ttf"); }
+body {
+  background-color: black;
+  font-family: 'Alegreya-Thin';
+  color: white; }
+
 h1 {
   width: 17em;
   height: 3em;
-  font-family: 'Alegreya-Thin';
   position: absolute;
   margin: auto;
   top: 0px;
@@ -2187,9 +2191,6 @@ h1 {
   color: white !important;
   font-size: 70px;
   font-weight: 100; }
-
-body {
-  background-color: black !important; }
 
 #agenda {
   border: 2px solid #F5F5F5;
@@ -2211,5 +2212,29 @@ h2 {
 
 p {
   text-align: center; }
+
+@keyframes fade-in {
+  0% {
+    opacity: 0; }
+  30% {
+    opacity: 0; }
+  100% {
+    opacity: 1; } }
+#weather {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  padding: 20px;
+  animation-name: fade-in;
+  animation-duration: 4s; }
+  #weather i {
+    font-size: 100px;
+    display: block;
+    text-align: center; }
+  #weather p {
+    font-size: 30px;
+    margin: 0;
+    text-align: center;
+    line-height: 1em; }
 
 /*# sourceMappingURL=main.css.map */
