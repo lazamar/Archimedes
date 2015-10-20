@@ -8,8 +8,8 @@ var Geo = (function(){
     //Get coordinates from the Chrome Window;
     lat = coord.coords.latitude;
     lon = coord.coords.longitude;
+    //Now that we have the coordinates we can get our first status.
     updateStatus();
-    console.log('Got coords');
   }
 
   function updateStatus(){
@@ -30,7 +30,7 @@ var Geo = (function(){
       statusPromise.resolve(prepareResponseStatus());
       ready.resolve();
     })
-    return statusPromise
+    return statusPromise.promise
   }
 
   function prepareResponseStatus(){
@@ -128,9 +128,7 @@ var Geo = (function(){
 
   return {
     updateStatus: function(){
-      updateStatus().then(function(value){
-        return value;
-      });
+      return updateStatus();
     },
     getStatus: function(){
       return prepareResponseStatus();
@@ -139,7 +137,7 @@ var Geo = (function(){
       return lastCheck;
     },
     ready:function(){
-      return ready;
+      return ready.promise;
     }
   }
 })();
