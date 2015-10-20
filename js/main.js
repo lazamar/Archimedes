@@ -1,6 +1,5 @@
 // Module to make AJAX requests.
   var request = require('request');
-// Wolfram app-id GQ7KXY-QRRKAQY3EH
 
 //Voice recognition bit.
 if (annyang) {
@@ -32,6 +31,7 @@ function printArgs(){
     console.log("Yes it is working!");
     response = response.replace(/Chomsky/gi,"Archimedes");
     response = response.replace(/Peter/gi,"Marcelo");
+    responsiveVoice.speak(response, "UK English Male");
     showOnScreen(response);
   })
 }
