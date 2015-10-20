@@ -1,3 +1,8 @@
+@import 'animate';
+// @import 'swiss';
+
+
+
 @font-face {
   font-family: 'Alegreya-Thin';
   src: url('../resources/fonts/AlegreyaSansSC-Thin.ttf');
@@ -19,7 +24,7 @@ h1{
   font-weight: 100;
 }
 body{
-  color: black;
+  background-color: black !important
 }
 
 #agenda{
