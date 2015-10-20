@@ -93,4 +93,18 @@ function showAgenda(){
     setTimeout(function(){ document.body.removeChild(agenda)},1500);
   },3000);
 }
-console.log("Hi?");
+
+console.log("One");
+
+console.log(Geo.updateStatus());
+
+Geo.ready().then(function(){
+  console.log("Ready!");
+  // Geo.updateStatus().then(function(status){
+  //   console.log('Returned!');
+  //
+  //   document.getElementById('w-icon').className = "wi wi-"+ status.icon + " wi-fi";
+  //   document.getElementById('w-temp').innerHTML = status.temp + '&deg;';
+  //   document.getElementById('w-desc').innerHTML = status.description;
+  // })
+})
