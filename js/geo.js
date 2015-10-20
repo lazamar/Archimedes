@@ -27,8 +27,9 @@ var Geo = (function(){
       var response = JSON.parse(body);
       status = response;
       lastCheck = Date.now();
-      statusPromise.resolve(prepareResponseStatus());
-      ready.resolve();
+      var responseStatus = prepareResponseStatus();
+      statusPromise.resolve(responseStatus);
+      ready.resolve(responseStatus);
     })
     return statusPromise.promise
   }

@@ -94,13 +94,10 @@ function showAgenda(){
   },3000);
 }
 
-Geo.ready().then(function(){
+Geo.ready().then(function(status){
   console.log("Ready!");
-  Geo.updateStatus().then(function(status){
-    console.log('Returned!');
+  document.getElementById('w-icon').className = "wi wi-"+ status.icon + " wi-fi";
+  document.getElementById('w-temp').innerHTML = status.temp + '&deg;';
+  document.getElementById('w-desc').innerHTML = status.description;
 
-    document.getElementById('w-icon').className = "wi wi-"+ status.icon + " wi-fi";
-    document.getElementById('w-temp').innerHTML = status.temp + '&deg;';
-    document.getElementById('w-desc').innerHTML = status.description;
-  })
 })
