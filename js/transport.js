@@ -1,7 +1,7 @@
 var prop, transport;
 
 transport = (function () {
-    var searchRadius = 500;
+    var searchRadius = 2500;
 
     function buildStopSearchUrl(lat, lon) {
         return 'https://api.tfl.gov.uk/StopPoint?' +
@@ -31,7 +31,6 @@ transport = (function () {
                     commonName: stopInstance.commonName,
                     lat: stopInstance.lat,
                     lon: stopInstance.lon,
-                    lines: stop.lines,
                     stopLetter: stopInstance.stopLetter,
                     indicator: stopInstance.indicator
                 };
@@ -50,6 +49,36 @@ transport = (function () {
         return stopPoints;
     }
 
+    function getBusTimes(id) {
+        var responseObj,
+            arrivals = [],
+            timePromise = Promise.defer(),
+            request = require('request'),
+            url = 'https://api.tfl.gov.uk/StopPoint/' + id +
+                '/Arrivals?app_id=' + AppKeys.tflAPI.appId +
+                '&app_key=' + AppKeys.tflAPI.appKey;
+
+        request.get(url, function (error, response, body) {
+            var i;
+            if (error || response.statusCode !== 200) {
+                timePromise.reject("Error in TFL request");
+                return;
+            }
+            responseObj = JSON.parse(body);
+
+            //Simplify the bus times array
+            for (i = 0; i < responseObj.length; i++) {
+                arrivals.push({
+                    line: responseObj[i].lineName,
+                    destination: responseObj[i].destinationName,
+                    arrival: new Date(responseObj[i].timeToLive)
+                });
+            }
+            timePromise.resolve(arrivals);
+        });
+
+        return timePromise.promise;
+    }
 
     return {
         nearbyStops: function (lat, lon) {
@@ -58,7 +87,7 @@ transport = (function () {
                 url = buildStopSearchUrl(lat, lon);
 
             request.get(url, function (error, response, body) {
-                var tflObj, stopPoints;
+                var i, tflObj, stopPoints, busTimesPromises = [];
 
                 if (error || response.statusCode !== 200) {
                     stopsPromise.reject("Error in TFL request");
@@ -67,11 +96,24 @@ transport = (function () {
 
                 tflObj = JSON.parse(body);
                 stopPoints = simplifyStopsObj(tflObj);
-                stopsPromise.resolve(stopPoints);
+                //Get but times for all stops
+                for (i = 0; i < stopPoints.length; i++) {
+                    busTimesPromises.push(getBusTimes(stopPoints[i].id));
+                }
+
+                Promise.all(busTimesPromises).then(function (values) {
+                    var j;
+                    //Now we can return the main promise
+                    for (j = 0; j < stopPoints.length; j++) {
+                        stopPoints[j].lines = values[j];
+                    }
+                    stopsPromise.resolve(stopPoints);
+                });
                 return;
             });
             return stopsPromise.promise;
         }
+
     };
 }());
 

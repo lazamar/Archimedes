@@ -1,7 +1,8 @@
 // Module to make AJAX requests.
 var request = require('request'),
     geoService = require('./js/geo.js'),
-    transport = require('./js/transport.js');
+    transport = require('./js/transport.js'),
+    moment = require('moment');
 
 function askChatBot(question) {
     var aPromise = Promise.defer(),
@@ -110,6 +111,6 @@ geoService.ready().then(function (status) {
     uiController.setWeather(status);
 });
 
-transport.nearbyStops(51.535980, -0.359031).then(function (response) {
-    console.log(response);
+transport.nearbyStops(51.535980, -0.359031).then(function (stopPoints) {
+    console.log(stopPoints);
 });

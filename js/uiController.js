@@ -29,9 +29,9 @@ uiController = (function () {
                 weatherContainer.style.animationName = 'fade-in';
             }, weatherContainer.style.animationDuration * 1000);
         },
-        showWeather: function () {
-
-        },
+        // showWeather: function () {
+        //
+        // },
         setMainText: function (text) {
             var oldElem = mainTextContainer.firstElementChild,
                 newElem = document.createElement("h1");
@@ -44,10 +44,14 @@ uiController = (function () {
             newElem.className = "animated fadeIn";
             mainTextContainer.appendChild(newElem);
         },
-        minimiseMainText: function () {
-
-        },
-        maximiseMainText: function () {
+        // minimiseMainText: function () {
+        //
+        // },
+        // maximiseMainText: function () {
+        //
+        // },
+        setTransportWidget: function (stopsObj) {
+            // var widget = document.createElement("div");
 
         }
     };
