@@ -28,7 +28,7 @@ app.on('ready', function () {
     // Create the browser window.
     mainWindow = new BrowserWindow({
         // Browser window options. See all at http://electron.atom.io/docs/v0.33.0/api/browser-window/
-        width: 800,
+        width: 1000,
         height: 700,
         // kiosk: true,
         frame: false,

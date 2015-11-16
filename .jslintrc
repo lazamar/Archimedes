@@ -24,6 +24,7 @@
         "require",
         "responsiveVoice",
         "AppKeys",
+        "uiController"
     ],
     "regexp": true,
     "rhino": false,

@@ -1,4 +1,6 @@
-var Geo = (function () {
+var prop, Geo;
+
+Geo = (function () {
     if (!navigator.geolocation) {
         console.error('Geolocation object not found');
         return false;
@@ -373,7 +375,9 @@ var Geo = (function () {
     };
 }());
 
-exports.updateStatus = Geo.updateStatus;
-exports.getStatus = Geo.getStatus;
-exports.lastCheck = Geo.lastCheck;
-exports.ready = Geo.ready;
+// Export functions
+for (prop in Geo) {
+    if (Geo.hasOwnProperty(prop)) {
+        exports[prop] = Geo[prop];
+    }
+}
