@@ -1,10 +1,8 @@
 // Module to make AJAX requests.
-var request = require('request');
-var geoService = require('./js/geo.js');
+var request = require('request'),
+    geoService = require('./js/geo.js');
 
-showOnScreen = uiController.setMainText;
-
-function ask(question) {
+function askChatBot(question) {
     var aPromise = Promise.defer(),
         result;
     request.post('http://demo.vhost.pandorabots.com/pandora/talk?botid=b0dafd24ee35a477',
@@ -25,18 +23,19 @@ function ask(question) {
     return aPromise.promise;
 }
 
+// For testing purposes.
 function printArgs(question) {
     var i;
     for (i = 0; i < arguments.length; i++) {
         console.log('Argument ' + i + ': ' + arguments[i]);
     }
     // question = arguments[0];
-    ask(question).then(function (response) {
+    askChatBot(question).then(function (response) {
         console.log("Yes it is working!");
         response = response.replace(/Chomsky/gi, "Archimedes");
         response = response.replace(/Peter/gi, "Marcelo");
         responsiveVoice.speak(response, "UK English Male");
-        showOnScreen(response);
+        uiController.setMainText(response);
     });
 }
 
@@ -47,7 +46,7 @@ function showCalendar() {
 }
 
 function helloWorld() {
-    showOnScreen("Hello there");
+    uiController.setMainText("Hello there");
 }
 
 function weather(day) {
@@ -55,14 +54,8 @@ function weather(day) {
 }
 
 function mirror(adjective) {
-    showOnScreen("No, my friend. You are the most " + adjective);
+    uiController.setMainText("No, my friend. You are the most " + adjective);
 }
-
-
-
-
-
-
 
 function showAgenda() {
     var agenda = document.createElement("div"),
@@ -111,10 +104,7 @@ if (annyang) {
 }
 
 
-
+// Set Weather
 geoService.ready().then(function (status) {
-    document.getElementById('weather-container').style.animationName = 'fade-in';
-    document.getElementById('w-icon').className = "wi wi-" + status.icon + " wi-fi";
-    document.getElementById('w-temp').innerHTML = status.temp + '&deg;';
-    document.getElementById('w-desc').innerHTML = status.description;
+    uiController.setWeather(status);
 });
