@@ -1,9 +1,23 @@
 var uiController;
 uiController = (function () {
     var mainTextContainer = document.getElementById("main-text-container"),
-        weatherContainer = document.getElementById("weather-container");
-    function showWidget() {
+        weatherContainer = document.getElementById("weather-container"),
+        widgetContainer = document.getElementById("widget-container"),
+        FADE_DURATION = 2;
 
+    function showWidget(elem) {
+        var lastWidget = widgetContainer.firstElementChild;
+        if (lastWidget) {
+            lastWidget.style.animationName = 'fade-out';
+            setTimeout(function () {
+                widgetContainer.removeChild(lastWidget);
+            }, FADE_DURATION);
+        }
+        setTimeout(function () {
+            elem.classList.add('widget');
+            elem.style.animationName = 'fade-in';
+            widgetContainer.appendChild(elem);
+        }, FADE_DURATION);
     }
     return {
         setWeather: function (status) {
@@ -20,14 +34,15 @@ uiController = (function () {
         },
         setMainText: function (text) {
             var oldElem = mainTextContainer.firstElementChild,
-                textElem = document.createElement("h1");
+                newElem = document.createElement("h1");
             oldElem.className = "animated fadeOut";
             setTimeout(function () {
                 mainTextContainer.removeChild(oldElem);
             }, 1000);
-            textElem.innerHTML = text;
-            textElem.className = "animated fadeIn";
-            mainTextContainer.appendChild(textElem);
+            newElem.innerHTML = text;
+            newElem.style.animationDuration = FADE_DURATION + 's';
+            newElem.className = "animated fadeIn";
+            mainTextContainer.appendChild(newElem);
         },
         minimiseMainText: function () {
 

@@ -2611,7 +2611,7 @@ body {
   font-family: 'Alegreya-Thin';
   color: white; }
 
-h1 {
+#main-text-container h1 {
   width: 17em;
   height: 3em;
   position: absolute;
@@ -2675,3 +2675,10 @@ p {
     margin: 0;
     text-align: center;
     line-height: 1em; }
+
+#widgets-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: auto;
+  height: auto; }
