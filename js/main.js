@@ -1,5 +1,6 @@
 // Module to make AJAX requests.
   var request = require('request');
+  var geoService = require('./js/geo.js');
 
 //Voice recognition bit.
 if (annyang) {
@@ -94,7 +95,7 @@ function showAgenda(){
   },3000);
 }
 
-Geo.ready().then(function(status){
+geoService.ready().then(function(status){
   document.getElementById('weather').style.animationName = 'fade-in';
   document.getElementById('w-icon').className = "wi wi-"+ status.icon + " wi-fi";
   document.getElementById('w-temp').innerHTML = status.temp + '&deg;';
