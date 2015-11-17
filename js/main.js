@@ -112,5 +112,5 @@ geoService.ready().then(function (status) {
 });
 
 transport.nearbyStops(51.535980, -0.359031).then(function (stopPoints) {
-    console.log(stopPoints);
+    uiController.showTransportWidget(stopPoints);
 });

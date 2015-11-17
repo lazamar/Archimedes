@@ -2669,7 +2669,8 @@ p {
   #weather-container i {
     font-size: 100px;
     display: block;
-    text-align: center; }
+    text-align: center;
+    height: 1.2em; }
   #weather-container p {
     font-size: 30px;
     margin: 0;
