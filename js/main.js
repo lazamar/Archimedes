@@ -4,6 +4,12 @@ var request = require('request'),
     transport = require('./js/transport.js'),
     moment = require('moment');
 
+function say(astring) {
+    astring = astring.replace(/Chomsky/gi, "Archimedes");
+    astring = astring.replace(/Peter/gi, "Marcelo");
+    responsiveVoice.speak(astring, "UK English Male");
+    uiController.setMainText(astring);
+}
 function askChatBot(question) {
     var aPromise = Promise.defer(),
         result;
@@ -24,21 +30,7 @@ function askChatBot(question) {
     return aPromise.promise;
 }
 
-// For testing purposes.
-function printArgs(question) {
-    var i;
-    for (i = 0; i < arguments.length; i++) {
-        console.log('Argument ' + i + ': ' + arguments[i]);
-    }
-    // question = arguments[0];
-    askChatBot(question).then(function (response) {
-        console.log("Yes it is working!");
-        response = response.replace(/Chomsky/gi, "Archimedes");
-        response = response.replace(/Peter/gi, "Marcelo");
-        responsiveVoice.speak(response, "UK English Male");
-        uiController.setMainText(response);
-    });
-}
+
 
 
 // Command functions
@@ -79,6 +71,40 @@ function showAgenda() {
     }, 3000);
 }
 
+function scrollWidgets(val) {
+    uiController.scrollWidgets(val);
+}
+
+function showNearbyBusStops() {
+    var lat, lon;
+    lat = geoService.getLat();
+    lon = geoService.getLon();
+    transport.nearbyStops(lat, lon).then(function (stopPoints) {
+        uiController.showTransportWidget(stopPoints);
+    });
+}
+
+// For testing purposes.
+function handleQuestion(question) {
+    switch (true) {
+    case /show[a-zA-Z\s]*?nearby[a-zA-Z\s]*?bus\sstop/i.test(question):
+        showNearbyBusStops();
+        break;
+    case /scroll\s(up|down)/i.test(question):
+        if (question.match(/(up|down)/i)[1] === "up") {
+            scrollWidgets(500);
+        } else {
+            scrollWidgets(-500);
+        }
+        break;
+    default:
+        askChatBot(question).then(function (response) {
+            say(response);
+        });
+    }
+    // question = arguments[0];
+}
+
 //Voice recognition bit.
 if (annyang) {
     // Let's define a command.
@@ -88,8 +114,8 @@ if (annyang) {
         'mirror mirror is there (anyone) (anybody) more :adjective than me': mirror,
         'Ok show me *quarter': showAgenda,
         '*anything': {
-            'regexp': /^.*Archimedes\s(.*)$/,
-            'callback': printArgs
+            'regexp': /^.*?Archimedes\s(.*)$/,
+            'callback': handleQuestion
         },
 
     };
@@ -104,17 +130,18 @@ if (annyang) {
     annyang.start();
 }
 
-
 // Set Weather
 geoService.ready().then(function (status) {
     uiController.setWeather(status);
-});
-
-transport.nearbyStops(51.542306, -0.346194).then(function (stopPoints) {
-    uiController.showTransportWidget(stopPoints);
-    setTimeout(function () {
-        transport.getBusTimes(stopPoints[5].id).then(function (busTimes) {
-            uiController.showBusTimes(stopPoints[5], busTimes);
-        });
-    }, 10000);
+    // var lat, lon;
+    // lat = geoService.getLat();
+    // lon = geoService.getLon();
+    // transport.nearbyStops(lat, lon).then(function (stopPoints) {
+    //     uiController.showTransportWidget(stopPoints);
+    //     setTimeout(function () {
+    //         transport.getBusTimes(stopPoints[5].id).then(function (busTimes) {
+    //             uiController.showBusTimes(stopPoints[5], busTimes);
+    //         });
+    //     }, 5000);
+    // });
 });

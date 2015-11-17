@@ -9,7 +9,19 @@ uiController = (function () {
             'scroll': 0,
             'lastWidgetTime': new Date()
         },
-        FADE_DURATION = 0.4;
+        FADE_DURATION = 0.4,
+        WIDGET_DURATION = 60000;
+
+    function scrollWidgets(val) {
+        if (val === 0) { //Reset scroll
+            widgetsContainerStatus.scroll = 0;
+        } else if (val === undefined) { //Scroll a bit
+            widgetsContainerStatus.scroll -= 500;
+        } else { //Scroll an exact amount
+            widgetsContainerStatus.scroll -= val;
+        }
+        widgetsContainer.style.transform = 'translateY(' + widgetsContainerStatus.scroll + 'px)';
+    }
 
     function removeWidgets() {
         var somethingToRemove = false,
@@ -21,8 +33,7 @@ uiController = (function () {
             lastWidget.classList.add('fadeOutUp');
             setTimeout(function () {
                 widgetsContainer.removeChild(lastWidget);
-                widgetsContainerStatus.scroll = 0;
-                widgetsContainer.style.transform = 'translateY(0px)';
+                scrollWidgets(0);
             }, FADE_DURATION * 1000);
             somethingToRemove = true;
         }
@@ -39,19 +50,14 @@ uiController = (function () {
             elem.classList.add('fadeInDown');
             widgetsContainer.appendChild(elem);
         }, delay);
+
+        //Auto remove widget
         if (!stayInScreen) {
-            //Auto remove widget
             setTimeout(function () {
                 if (widgetsContainerStatus.lastWidgetTime === insertTime) {
                     removeWidgets();
                 }
-            }, 60000);
-
-            //Scroll
-            setTimeout(function () {
-                widgetsContainerStatus.scroll -= 800;
-                widgetsContainer.style.transform = 'translateY(' + widgetsContainerStatus.scroll + 'px)';
-            }, 5000);
+            }, WIDGET_DURATION);
         }
     }
 
@@ -79,6 +85,8 @@ uiController = (function () {
         }
         return elem;
     }
+
+
 
     return {
         setWeather: function (status) {
@@ -109,6 +117,9 @@ uiController = (function () {
         // maximiseMainText: function () {
         //
         // },
+        scrollWidgets: function (val) {
+            scrollWidgets(val);
+        },
         showTransportWidget: function (stops) {
             var i, transportContainer, elem;
             transportContainer = document.createElement('div');

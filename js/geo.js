@@ -357,6 +357,11 @@ Geo = (function () {
     navigator.geolocation.getCurrentPosition(getCoords);
 
     return {
+        // The promise will be resolved with the first status
+        // response the module received.
+        ready: function () {
+            return ready.promise;
+        },
         // Will return a promise that will be resolved with a status.
         updateStatus: function () {
             return updateStatus();
@@ -367,14 +372,16 @@ Geo = (function () {
         lastCheck: function () {
             return lastCheck;
         },
-        // The promise will be resolved with the first status
-        // response the module received.
-        ready: function () {
-            return ready.promise;
+        getLat: function () {
+            return lat;
+        },
+        getLon: function () {
+            return lon;
         }
     };
 }());
 
+Geo.ready();
 // Export functions
 for (prop in Geo) {
     if (Geo.hasOwnProperty(prop)) {
