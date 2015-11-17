@@ -11,6 +11,7 @@ body{
   background-color: black;
   font-family: 'Alegreya-Thin';
   color: white;
+  overflow: hidden;
 }
 
 #main-text-container h1{
@@ -86,6 +87,8 @@ p{
   right: 0;
   width: auto;
   height: auto;
+  transition: transform 1s ease-out;
+  will-change: transform;
 }
 .widget{
   animation-duration: .5s;
@@ -102,14 +105,21 @@ p{
 .cascade:nth-of-type(3){ animation-delay: 0.30s }
 .cascade:nth-of-type(4){ animation-delay: .45s }
 .cascade:nth-of-type(5){ animation-delay: .60s }
-.cascade:nth-of-type(6){ animation-delay: 75s }
-.cascade:nth-of-type(7){ animation-delay: 90s }
+.cascade:nth-of-type(6){ animation-delay: .75s }
+.cascade:nth-of-type(7){ animation-delay: .90s }
 .cascade:nth-of-type(8){ animation-delay: 1.05s }
 .cascade:nth-of-type(9){ animation-delay: 1.20s }
 .cascade:nth-of-type(10){ animation-delay: 1.35s }
 .cascade:nth-of-type(11){ animation-delay: 1.5s }
 .cascade:nth-of-type(12){ animation-delay: 1.65s }
 .cascade:nth-of-type(13){ animation-delay: 1.80s }
+.cascade:nth-of-type(14){ animation-delay: 1.95s }
+.cascade:nth-of-type(15){ animation-delay: 2.10s }
+.cascade:nth-of-type(16){ animation-delay: 2.25s }
+.cascade:nth-of-type(17){ animation-delay: 2.40s }
+.cascade:nth-of-type(18){ animation-delay: 2.55s }
+.cascade:nth-of-type(19){ animation-delay: 2.70s }
+.cascade:nth-of-type(20){ animation-delay: 2.85s }
 
 .trans-stop{
   border: 1px solid white;

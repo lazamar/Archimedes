@@ -2180,7 +2180,8 @@ Copyright (c) 2015 Daniel Eden
 body {
   background-color: black;
   font-family: 'Alegreya-Thin';
-  color: white; }
+  color: white;
+  overflow: hidden; }
 
 #main-text-container h1 {
   width: 17em;
@@ -2249,7 +2250,9 @@ p {
   top: 0;
   right: 0;
   width: auto;
-  height: auto; }
+  height: auto;
+  transition: transform 1s ease-out;
+  will-change: transform; }
 
 .widget {
   animation-duration: .5s; }
@@ -2275,10 +2278,10 @@ p {
   animation-delay: 0.6s; }
 
 .cascade:nth-of-type(6), .trans-bus-time:nth-of-type(6) {
-  animation-delay: 75s; }
+  animation-delay: 0.75s; }
 
 .cascade:nth-of-type(7), .trans-bus-time:nth-of-type(7) {
-  animation-delay: 90s; }
+  animation-delay: 0.9s; }
 
 .cascade:nth-of-type(8), .trans-bus-time:nth-of-type(8) {
   animation-delay: 1.05s; }
@@ -2297,6 +2300,27 @@ p {
 
 .cascade:nth-of-type(13), .trans-bus-time:nth-of-type(13) {
   animation-delay: 1.8s; }
+
+.cascade:nth-of-type(14), .trans-bus-time:nth-of-type(14) {
+  animation-delay: 1.95s; }
+
+.cascade:nth-of-type(15), .trans-bus-time:nth-of-type(15) {
+  animation-delay: 2.1s; }
+
+.cascade:nth-of-type(16), .trans-bus-time:nth-of-type(16) {
+  animation-delay: 2.25s; }
+
+.cascade:nth-of-type(17), .trans-bus-time:nth-of-type(17) {
+  animation-delay: 2.4s; }
+
+.cascade:nth-of-type(18), .trans-bus-time:nth-of-type(18) {
+  animation-delay: 2.55s; }
+
+.cascade:nth-of-type(19), .trans-bus-time:nth-of-type(19) {
+  animation-delay: 2.7s; }
+
+.cascade:nth-of-type(20), .trans-bus-time:nth-of-type(20) {
+  animation-delay: 2.85s; }
 
 .trans-stop {
   border: 1px solid white;

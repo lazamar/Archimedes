@@ -16,9 +16,35 @@ transport = (function () {
     }
 
     function simplifyStopsObj(tflObj) {
-        var i, j, k, stop, stopInstance, stopPoint,
+        var i, j, k, stop, stopPoint,
             lines = [],
             stopPoints = [];
+
+        function simplifyStop(astop) {
+            if (astop.children.length > 0) {
+                astop.children.map(simplifyStop);
+                return;
+            }
+            stopPoint = {
+                'id': astop.id,
+                'commonName': astop.commonName,
+                'lat': astop.lat,
+                'lon': astop.lon,
+                'lines': lines,
+                'stopLetter': astop.stopLetter,
+                'indicator': astop.indicator
+            };
+            //Check if there is a record in additional properties that says
+            //which direction buses or trains are going towards in this
+            //stop.
+            for (k = 0; k < astop.additionalProperties.length; k++) {
+                if (astop.additionalProperties[k].key === "Towards") {
+                    stopPoint.towards = astop.additionalProperties[k].value;
+                }
+            }
+            stopPoints.push(stopPoint);
+        }
+
         // Go Through bus stops returned and create a simplified bus stops
         // array.
         for (i = 0; i < tflObj.stopPoints.length; i++) {
@@ -30,28 +56,7 @@ transport = (function () {
             //Each stop can have two children, one with buses going
             //one way and the other with them going the opposite
             //way.
-            for (j = 0; j < stop.children.length; j++) {
-                stopInstance = stop.children[j];
-                stopPoint = {
-                    'id': stopInstance.id,
-                    'commonName': stopInstance.commonName,
-                    'lat': stopInstance.lat,
-                    'lon': stopInstance.lon,
-                    'lines': lines,
-                    'stopLetter': stopInstance.stopLetter,
-                    'indicator': stopInstance.indicator
-                };
-
-                //Check if there is a record in additional properties that says
-                //which direction buses or trains are going towards in this
-                //stop.
-                for (k = 0; k < stopInstance.additionalProperties.length; k++) {
-                    if (stopInstance.additionalProperties[k].key === "Towards") {
-                        stopPoint.towards = stopInstance.additionalProperties[k].value;
-                    }
-                }
-                stopPoints.push(stopPoint);
-            }
+            stop.children.map(simplifyStop);
         }
         return stopPoints;
     }

@@ -5,25 +5,41 @@ uiController = (function () {
     var mainTextContainer = document.getElementById("main-text-container"),
         weatherContainer = document.getElementById("weather-container"),
         widgetsContainer = document.getElementById("widgets-container"),
+        widgetsContainerScroll = 0,
         FADE_DURATION = 0.4;
 
-    function setWidget(elem) {
-        var lastWidget = widgetsContainer.firstElementChild;
+    function removeWidgets() {
+        var somethingToRemove = false,
+            lastWidget = widgetsContainer.firstElementChild;
         if (lastWidget) {
             lastWidget.classList.remove('animated');
-            lastWidget.classList.remove('fade-in');
+            lastWidget.classList.remove('fadeInDown');
             lastWidget.classList.add('animated');
-            lastWidget.classList.add('fadeOut');
+            lastWidget.classList.add('fadeOutUp');
             setTimeout(function () {
                 widgetsContainer.removeChild(lastWidget);
+                widgetsContainerScroll = 0;
+                widgetsContainer.style.transform = 'translateY(0px)';
             }, FADE_DURATION * 1000);
+            somethingToRemove = true;
         }
+        return somethingToRemove;
+    }
+
+    function setWidget(elem, stayInScreen) {
+        var delay = removeWidgets() ? FADE_DURATION * 1000 : 0;
         setTimeout(function () {
             elem.classList.add('widget');
             elem.classList.add('animated');
-            elem.classList.add('fadeIn');
+            elem.classList.add('fadeInDown');
             widgetsContainer.appendChild(elem);
-        }, FADE_DURATION * 1000);
+        }, delay);
+        if (!stayInScreen) {
+            setTimeout(function () {
+                widgetsContainer.style.transform = 'translateY(' +  (widgetsContainerScroll - 800) + 'px)';
+            }, 5000);
+            setTimeout(removeWidgets, 60000);
+        }
     }
     return {
         setWeather: function (status) {
@@ -59,11 +75,13 @@ uiController = (function () {
             transportContainer = document.createElement('div');
             for (i = 0; i < stops.length; i++) {
                 title = document.createElement('h2');
-                title.innerHTML = stops[i].stopLetter;
+                title.innerHTML = stops[i].stopLetter || stops[i].commonName;
 
-                direction = document.createElement('p');
-                direction.classList.add("trans-direction");
-                direction.innerHTML = "Towards " + stops[i].towards;
+                if (stops[i].towards) {
+                    direction = document.createElement('p');
+                    direction.classList.add("trans-direction");
+                    direction.innerHTML = "Towards " + stops[i].towards;
+                }
 
                 lines = document.createElement('p');
                 lines.classList.add("trans-lines");
@@ -84,11 +102,13 @@ uiController = (function () {
             var i, title, direction, container, stopElem, busTimeElem, stopTimes;
 
             title = document.createElement('h2');
-            title.innerHTML = stopPoint.stopLetter;
+            title.innerHTML = stopPoint.stopLetter || stopPoint.commonName;
 
-            direction = document.createElement('p');
-            direction.classList.add("trans-direction");
-            direction.innerHTML = "Towards " + stopPoint.towards;
+            if (stopPoint.towards) {
+                direction = document.createElement('p');
+                direction.classList.add("trans-direction");
+                direction.innerHTML = "Towards " + stopPoint.towards;
+            }
 
             stopElem = document.createElement('div');
             stopElem.classList.add("trans-stop");
