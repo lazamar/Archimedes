@@ -113,8 +113,8 @@ geoService.ready().then(function (status) {
 transport.nearbyStops(51.542306, -0.346194).then(function (stopPoints) {
     uiController.showTransportWidget(stopPoints);
     setTimeout(function () {
-        transport.getBusTimes(stopPoints[2].id).then(function (busTimes) {
-            uiController.showBusTimes(stopPoints[2], busTimes);
+        transport.getBusTimes(stopPoints[5].id).then(function (busTimes) {
+            uiController.showBusTimes(stopPoints[5], busTimes);
         });
     }, 10000);
 });

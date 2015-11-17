@@ -5,7 +5,10 @@ uiController = (function () {
     var mainTextContainer = document.getElementById("main-text-container"),
         weatherContainer = document.getElementById("weather-container"),
         widgetsContainer = document.getElementById("widgets-container"),
-        widgetsContainerScroll = 0,
+        widgetsContainerStatus = {
+            'scroll': 0,
+            'lastWidgetTime': new Date()
+        },
         FADE_DURATION = 0.4;
 
     function removeWidgets() {
@@ -18,7 +21,7 @@ uiController = (function () {
             lastWidget.classList.add('fadeOutUp');
             setTimeout(function () {
                 widgetsContainer.removeChild(lastWidget);
-                widgetsContainerScroll = 0;
+                widgetsContainerStatus.scroll = 0;
                 widgetsContainer.style.transform = 'translateY(0px)';
             }, FADE_DURATION * 1000);
             somethingToRemove = true;
@@ -27,7 +30,9 @@ uiController = (function () {
     }
 
     function setWidget(elem, stayInScreen) {
-        var delay = removeWidgets() ? FADE_DURATION * 1000 : 0;
+        var delay = removeWidgets() ? FADE_DURATION * 1000 : 0,
+            insertTime = new Date();
+        widgetsContainerStatus.lastWidgetTime = insertTime;
         setTimeout(function () {
             elem.classList.add('widget');
             elem.classList.add('animated');
@@ -35,12 +40,46 @@ uiController = (function () {
             widgetsContainer.appendChild(elem);
         }, delay);
         if (!stayInScreen) {
+            //Auto remove widget
             setTimeout(function () {
-                widgetsContainer.style.transform = 'translateY(' +  (widgetsContainerScroll - 800) + 'px)';
+                if (widgetsContainerStatus.lastWidgetTime === insertTime) {
+                    removeWidgets();
+                }
+            }, 60000);
+
+            //Scroll
+            setTimeout(function () {
+                widgetsContainerStatus.scroll -= 800;
+                widgetsContainer.style.transform = 'translateY(' + widgetsContainerStatus.scroll + 'px)';
             }, 5000);
-            setTimeout(removeWidgets, 60000);
         }
     }
+
+    function createStopCard(stopObj, showLines) {
+        var elem, title, direction, lines;
+        elem = document.createElement('div');
+        elem.classList.add("trans-stop");
+        elem.classList.add("cascade");
+
+        title = document.createElement('h2');
+        title.innerHTML = stopObj.stopLetter || stopObj.commonName;
+        elem.appendChild(title);
+
+        if (stopObj.towards) {
+            direction = document.createElement('p');
+            direction.classList.add("trans-direction");
+            direction.innerHTML = "Towards " + stopObj.towards;
+            elem.appendChild(direction);
+        }
+        if (showLines) {
+            lines = document.createElement('p');
+            lines.classList.add("trans-lines");
+            lines.innerHTML = stopObj.lines.join(', ');
+            elem.appendChild(lines);
+        }
+        return elem;
+    }
+
     return {
         setWeather: function (status) {
             weatherContainer.style.animationName = 'fadeOut';
@@ -71,50 +110,19 @@ uiController = (function () {
         //
         // },
         showTransportWidget: function (stops) {
-            var i, transportContainer, elem, title, direction, lines;
+            var i, transportContainer, elem;
             transportContainer = document.createElement('div');
             for (i = 0; i < stops.length; i++) {
-                title = document.createElement('h2');
-                title.innerHTML = stops[i].stopLetter || stops[i].commonName;
-
-                if (stops[i].towards) {
-                    direction = document.createElement('p');
-                    direction.classList.add("trans-direction");
-                    direction.innerHTML = "Towards " + stops[i].towards;
-                }
-
-                lines = document.createElement('p');
-                lines.classList.add("trans-lines");
-                lines.innerHTML = stops[i].lines.join(', ');
-
-                elem = document.createElement('div');
-                elem.classList.add("trans-stop");
-                elem.classList.add("cascade");
-                elem.appendChild(title);
-                elem.appendChild(direction);
-                elem.appendChild(lines);
+                elem = createStopCard(stops[i], true);
                 transportContainer.appendChild(elem);
             }
             setWidget(transportContainer);
             return;
         },
         showBusTimes: function (stopPoint, busTimes) {
-            var i, title, direction, container, stopElem, busTimeElem, stopTimes;
-
-            title = document.createElement('h2');
-            title.innerHTML = stopPoint.stopLetter || stopPoint.commonName;
-
-            if (stopPoint.towards) {
-                direction = document.createElement('p');
-                direction.classList.add("trans-direction");
-                direction.innerHTML = "Towards " + stopPoint.towards;
-            }
-
-            stopElem = document.createElement('div');
-            stopElem.classList.add("trans-stop");
-            stopElem.classList.add("selected");
-            stopElem.appendChild(title);
-            stopElem.appendChild(direction);
+            var i, container, stopElem, busTimeElem, stopTimes;
+            stopElem = createStopCard(stopPoint);
+            stopElem.classList.add('selected');
 
             stopTimes = document.createElement('div');
             for (i = 0; i < busTimes.length; i++) {
