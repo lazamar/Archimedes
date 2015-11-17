@@ -7,13 +7,12 @@ var request = require('request'),
 function askChatBot(question) {
     var aPromise = Promise.defer(),
         result;
-    request.post('http://demo.vhost.pandorabots.com/pandora/talk?botid=b0dafd24ee35a477',
-        {
-            form: {
-                'submit': 'Ask Chomsky',
-                'input': question
-            }
-        },
+    request.post('http://demo.vhost.pandorabots.com/pandora/talk?botid=b0dafd24ee35a477', {
+        form: {
+            'submit': 'Ask Chomsky',
+            'input': question
+        }
+    },
         function (error, response, body) {
             if (!error && response.statusCode === 200) {
                 result = body.match(/<b>Chomsky:<\/b>\s*<br\/><br\/>\s*([^<]*)/);
@@ -113,4 +112,9 @@ geoService.ready().then(function (status) {
 
 transport.nearbyStops(51.535980, -0.359031).then(function (stopPoints) {
     uiController.showTransportWidget(stopPoints);
+    setTimeout(function () {
+        transport.getBusTimes(stopPoints[2].id).then(function (busTimes) {
+            uiController.showBusTimes(stopPoints[2], busTimes);
+        });
+    }, 5000);
 });
