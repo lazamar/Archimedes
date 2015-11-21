@@ -145,3 +145,18 @@ geoService.ready().then(function (status) {
     //     }, 5000);
     // });
 });
+
+
+// http://nodejs.org/api.html#_child_processes
+var exec = require('child_process').exec;
+var child;
+// executes `pwd`
+var command = "curl 'https://content.googleapis.com/calendar/v3/calendars/primary/events?maxResults=10&orderBy=startTime&showDeleted=false&singleEvents=true&timeMin=2015-11-21T13%3A38%3A53.064Z' -H 'Authorization: Bearer ya29.MwI6CvP5iAN8FvsXKZgXkwCUWJJSWgGt5_Ul_Fe9shRH1bilq5OQEOYswSwcD8pt8Ixx' -H 'X-Goog-Encode-Response-If-Executable: base64' -H 'X-Origin: http://localhost:8080' -H 'X-ClientDetails: appVersion=5.0%20(X11%3B%20Linux%20x86_64)%20AppleWebKit%2F537.36%20(KHTML%2C%20like%20Gecko)%20Chrome%2F46.0.2490.80%20Safari%2F537.36&platform=Linux%20x86_64&userAgent=Mozilla%2F5.0%20(X11%3B%20Linux%20x86_64)%20AppleWebKit%2F537.36%20(KHTML%2C%20like%20Gecko)%20Chrome%2F46.0.2490.80%20Safari%2F537.36' -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36' -H 'Referer: https://content.googleapis.com/static/proxy.html?jsh=m%3B%2F_%2Fscs%2Fapps-static%2F_%2Fjs%2Fk%3Doz.gapi.en_GB.Rx51stRkYnQ.O%2Fm%3D__features__%2Fam%3DAQ%2Frt%3Dj%2Fd%3D1%2Ft%3Dzcms%2Frs%3DAGLTcCM5XUrLkPZ9aFXqtSLivsifryqsUA' -H 'X-JavaScript-User-Agent: google-api-javascript-client/1.1.0-beta' -H 'X-Referer: http://localhost:8080' --compressed"
+
+child = exec(command, function (error, stdout, stderr) {
+  console.log('stdout: ' + stdout);
+  console.log('stderr: ' + stderr);
+  if (error !== null) {
+    console.log('exec error: ' + error);
+  }
+});
