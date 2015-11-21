@@ -2,7 +2,8 @@
 var request = require('request'),
     geoService = require('./js/geo.js'),
     transport = require('./js/transport.js'),
-    moment = require('moment');
+    moment = require('moment'),
+    exec = require('child_process').exec;
 
 function say(astring) {
     astring = astring.replace(/Chomsky/gi, "Archimedes");
@@ -147,16 +148,80 @@ geoService.ready().then(function (status) {
 });
 
 
-// http://nodejs.org/api.html#_child_processes
-var exec = require('child_process').exec;
-var child;
-// executes `pwd`
-var command = "curl 'https://content.googleapis.com/calendar/v3/calendars/primary/events?maxResults=10&orderBy=startTime&showDeleted=false&singleEvents=true&timeMin=2015-11-21T13%3A38%3A53.064Z' -H 'Authorization: Bearer ya29.MwI6CvP5iAN8FvsXKZgXkwCUWJJSWgGt5_Ul_Fe9shRH1bilq5OQEOYswSwcD8pt8Ixx' -H 'X-Goog-Encode-Response-If-Executable: base64' -H 'X-Origin: http://localhost:8080' -H 'X-ClientDetails: appVersion=5.0%20(X11%3B%20Linux%20x86_64)%20AppleWebKit%2F537.36%20(KHTML%2C%20like%20Gecko)%20Chrome%2F46.0.2490.80%20Safari%2F537.36&platform=Linux%20x86_64&userAgent=Mozilla%2F5.0%20(X11%3B%20Linux%20x86_64)%20AppleWebKit%2F537.36%20(KHTML%2C%20like%20Gecko)%20Chrome%2F46.0.2490.80%20Safari%2F537.36' -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36' -H 'Referer: https://content.googleapis.com/static/proxy.html?jsh=m%3B%2F_%2Fscs%2Fapps-static%2F_%2Fjs%2Fk%3Doz.gapi.en_GB.Rx51stRkYnQ.O%2Fm%3D__features__%2Fam%3DAQ%2Frt%3Dj%2Fd%3D1%2Ft%3Dzcms%2Frs%3DAGLTcCM5XUrLkPZ9aFXqtSLivsifryqsUA' -H 'X-JavaScript-User-Agent: google-api-javascript-client/1.1.0-beta' -H 'X-Referer: http://localhost:8080' --compressed"
 
-child = exec(command, function (error, stdout, stderr) {
-  console.log('stdout: ' + stdout);
-  console.log('stderr: ' + stderr);
-  if (error !== null) {
-    console.log('exec error: ' + error);
-  }
-});
+function getRefreshTokenCommand() {
+    var headers = ' -H "POST /oauth2/v3/token HTTP/1.1" '
+            + ' -H "Host: www.googleapis.com" '
+            + ' -H "Content-Type: application/x-www-form-urlencoded" ',
+        clientId = AppKeys.calendarAPI.clientId,
+        clientSecret = AppKeys.calendarAPI.clientSecret,
+        refreshToken = AppKeys.calendarAPI.refreshToken,
+        data = '--data "'
+            + 'client_id=' + clientId
+            + '&client_secret=' + clientSecret
+            + '&refresh_token=' + refreshToken
+            + '&grant_type=refresh_token'
+            + '" ',
+        url = 'https://www.googleapis.com/oauth2/v3/token',
+        curl = 'curl ' + headers + data + url;
+    // curl = 'curl -H "POST /oauth2/v3/token HTTP/1.1" -H "Host: www.googleapis.com" -H "Content-Type: application/x-www-form-urlencoded" --data "client_id=119974853322-gbvi7p9nbsbre8trghacs451jn5571s5.apps.googleusercontent.com&client_secret=Xo2ZvAf4w9aODypptHV1aL5K&refresh_token=1/7db8jLv1LgMy9-pgrJ9LisyvN3hqH7xzFofKABKFcLpIgOrJDtdun6zK6XiATCKT&grant_type=refresh_token" https://www.googleapis.com/oauth2/v3/token'
+    return curl;
+}
+
+function getCalendarCommand() {
+    var url = ' "'
+            + 'https://content.googleapis.com/calendar/v3/calendars/primary/events?'
+            + 'maxResults=10'
+            + '&orderBy=startTime'
+            + '&showDeleted=false'
+            + '&singleEvents=true'
+            + '&timeMin=' + encodeURIComponent(moment(new Date()).add(1, 'day').toJSON()) //Tomorrow's date;
+            + '"',
+        accessToken = AppKeys.calendarAPI.accessToken,
+        headers = " -H 'Authorization: Bearer " + accessToken + "' "
+            + "-H 'X-Goog-Encode-Response-If-Executable: base64' "
+            + "-H 'X-Origin: http://localhost:8080' "
+            + "-H 'X-ClientDetails: appVersion=5.0%20(X11%3B%20Linux%20x86_64)%20AppleWebKit%2F537.36%20(KHTML%2C%20like%20Gecko)%20Chrome%2F46.0.2490.80%20Safari%2F537.36&platform=Linux%20x86_64&userAgent=Mozilla%2F5.0%20(X11%3B%20Linux%20x86_64)%20AppleWebKit%2F537.36%20(KHTML%2C%20like%20Gecko)%20Chrome%2F46.0.2490.80%20Safari%2F537.36' "
+            + "-H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36' "
+            + "-H 'Referer: https://content.googleapis.com/static/proxy.html?jsh=m%3B%2F_%2Fscs%2Fapps-static%2F_%2Fjs%2Fk%3Doz.gapi.en_GB.Rx51stRkYnQ.O%2Fm%3D__features__%2Fam%3DAQ%2Frt%3Dj%2Fd%3D1%2Ft%3Dzcms%2Frs%3DAGLTcCM5XUrLkPZ9aFXqtSLivsifryqsUA' "
+            + "-H 'X-JavaScript-User-Agent: google-api-javascript-client/1.1.0-beta' "
+            + "-H 'X-Referer: http://localhost:8080' --compressed",
+        curl = 'curl ' + url + headers;
+    // curl = "curl 'https://content.googleapis.com/calendar/v3/calendars/primary/events?maxResults=10&orderBy=startTime&showDeleted=false&singleEvents=true&timeMin=2015-11-21T13%3A38%3A53.064Z' -H 'Authorization: Bearer ya29.MwI6CvP5iAN8FvsXKZgXkwCUWJJSWgGt5_Ul_Fe9shRH1bilq5OQEOYswSwcD8pt8Ixx' -H 'X-Goog-Encode-Response-If-Executable: base64' -H 'X-Origin: http://localhost:8080' -H 'X-ClientDetails: appVersion=5.0%20(X11%3B%20Linux%20x86_64)%20AppleWebKit%2F537.36%20(KHTML%2C%20like%20Gecko)%20Chrome%2F46.0.2490.80%20Safari%2F537.36&platform=Linux%20x86_64&userAgent=Mozilla%2F5.0%20(X11%3B%20Linux%20x86_64)%20AppleWebKit%2F537.36%20(KHTML%2C%20like%20Gecko)%20Chrome%2F46.0.2490.80%20Safari%2F537.36' -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36' -H 'Referer: https://content.googleapis.com/static/proxy.html?jsh=m%3B%2F_%2Fscs%2Fapps-static%2F_%2Fjs%2Fk%3Doz.gapi.en_GB.Rx51stRkYnQ.O%2Fm%3D__features__%2Fam%3DAQ%2Frt%3Dj%2Fd%3D1%2Ft%3Dzcms%2Frs%3DAGLTcCM5XUrLkPZ9aFXqtSLivsifryqsUA' -H 'X-JavaScript-User-Agent: google-api-javascript-client/1.1.0-beta' -H 'X-Referer: http://localhost:8080' --compressed"
+    return curl;
+}
+
+function refreshToken() {
+    var response = Promise.defer();
+    exec(getRefreshTokenCommand(), function (error, stdout) {
+        if (error) {
+            response.reject("CURL execution error:");
+            return;
+        }
+        var tokenUpdate = JSON.parse(stdout);
+        if (tokenUpdate.error) {
+            response.reject("Failed to renew calendar access token");
+            return;
+        }
+        AppKeys.calendarAPI.accessToken = tokenUpdate.access_token;
+        response.resolve();
+    });
+    return response.promise;
+}
+
+function handleCalendar(error, stdout) {
+    if (error) {
+        console.error("CURL execution error:" + error);
+        return;
+    }
+    var calEvents = JSON.parse(stdout);
+    if (calEvents.error) {
+        refreshToken().then(function () {
+            exec(getCalendarCommand(), handleCalendar);
+        });
+        return;
+    }
+    uiController.showCalendar(calEvents.items);
+}
+
+exec(getCalendarCommand(), handleCalendar);

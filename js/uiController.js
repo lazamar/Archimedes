@@ -146,6 +146,43 @@ uiController = (function () {
             container.appendChild(stopElem);
             container.appendChild(stopTimes);
             setWidget(container);
+        },
+        showCalendar: function (events) {
+            var title,
+                location,
+                eventItem,
+                duration,
+                event,
+                calendarContainer = document.createElement('div');
+            for (var i = 0; i < events.length; i++) {
+                event = events[i];
+                eventItem = document.createElement('div');
+                eventItem.classList.add('trans-stop');
+                if(event.summary){
+                    title = document.createElement('h2');
+                    title.innerHTML = event.summary;
+                    eventItem.append(title);
+                }
+                if(event.location){
+                    location = document.createElement('p');
+                    eventItem.append(location);
+                }
+
+                start = event.start.dateTime;
+                end = event.end.dateTime;
+                diff = moment(end).diff(start);
+
+                date = document.createElement('p');
+                date.innerHTML = moment(start).calendar();
+                eventItem.append(date);
+
+                duration = document.createElement('p');
+                duration.innerHTML = diff.humanize();
+                eventItem.append(duration);
+
+                calendarContainer.append(eventItem);
+            }
+            setWidget(calendarContainer);
         }
     };
 }());
