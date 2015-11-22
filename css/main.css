@@ -4,30 +4,32 @@ Licensed under the MIT license - http://opensource.org/licenses/MIT
 
 Copyright (c) 2015 Daniel Eden
 */
-.animated, .cascade, .trans-bus-time {
+.animated, .cascade, .widget-element, .trans-bus-time {
   -webkit-animation-duration: 1s;
   animation-duration: 1s;
   -webkit-animation-fill-mode: both;
   animation-fill-mode: both; }
 
-.animated.infinite, .infinite.cascade, .infinite.trans-bus-time {
+.animated.infinite, .infinite.cascade, .infinite.widget-element, .infinite.trans-bus-time {
   -webkit-animation-iteration-count: infinite;
   animation-iteration-count: infinite; }
 
-.animated.hinge, .hinge.cascade, .hinge.trans-bus-time {
+.animated.hinge, .hinge.cascade, .hinge.widget-element, .hinge.trans-bus-time {
   -webkit-animation-duration: 2s;
   animation-duration: 2s; }
 
-.animated.bounceIn, .bounceIn.cascade, .bounceIn.trans-bus-time,
+.animated.bounceIn, .bounceIn.cascade, .bounceIn.widget-element, .bounceIn.trans-bus-time,
 .animated.bounceOut,
 .bounceOut.cascade,
+.bounceOut.widget-element,
 .bounceOut.trans-bus-time {
   -webkit-animation-duration: .75s;
   animation-duration: .75s; }
 
-.animated.flipOutX, .flipOutX.cascade, .flipOutX.trans-bus-time,
+.animated.flipOutX, .flipOutX.cascade, .flipOutX.widget-element, .flipOutX.trans-bus-time,
 .animated.flipOutY,
 .flipOutY.cascade,
+.flipOutY.widget-element,
 .flipOutY.trans-bus-time {
   -webkit-animation-duration: .75s;
   animation-duration: .75s; }
@@ -1132,7 +1134,7 @@ Copyright (c) 2015 Daniel Eden
     transform: perspective(400px);
     -webkit-animation-timing-function: ease-in;
     animation-timing-function: ease-in; } }
-.animated.flip, .flip.cascade, .flip.trans-bus-time {
+.animated.flip, .flip.cascade, .flip.widget-element, .flip.trans-bus-time {
   -webkit-backface-visibility: visible;
   backface-visibility: visible;
   -webkit-animation-name: flip;
@@ -2257,95 +2259,107 @@ p {
 .widget {
   animation-duration: .5s; }
 
-.cascade, .trans-bus-time {
+.cascade, .widget-element, .trans-bus-time {
   animation-name: flipInX;
   animation-duration: .8s;
   transform-origin: 50% 0%; }
 
-.cascade:nth-of-type(1), .trans-bus-time:nth-of-type(1) {
+.cascade:nth-of-type(1), .widget-element:nth-of-type(1), .trans-bus-time:nth-of-type(1) {
   animation-delay: 0s; }
 
-.cascade:nth-of-type(2), .trans-bus-time:nth-of-type(2) {
+.cascade:nth-of-type(2), .widget-element:nth-of-type(2), .trans-bus-time:nth-of-type(2) {
   animation-delay: 0.15s; }
 
-.cascade:nth-of-type(3), .trans-bus-time:nth-of-type(3) {
+.cascade:nth-of-type(3), .widget-element:nth-of-type(3), .trans-bus-time:nth-of-type(3) {
   animation-delay: 0.3s; }
 
-.cascade:nth-of-type(4), .trans-bus-time:nth-of-type(4) {
+.cascade:nth-of-type(4), .widget-element:nth-of-type(4), .trans-bus-time:nth-of-type(4) {
   animation-delay: 0.45s; }
 
-.cascade:nth-of-type(5), .trans-bus-time:nth-of-type(5) {
+.cascade:nth-of-type(5), .widget-element:nth-of-type(5), .trans-bus-time:nth-of-type(5) {
   animation-delay: 0.6s; }
 
-.cascade:nth-of-type(6), .trans-bus-time:nth-of-type(6) {
+.cascade:nth-of-type(6), .widget-element:nth-of-type(6), .trans-bus-time:nth-of-type(6) {
   animation-delay: 0.75s; }
 
-.cascade:nth-of-type(7), .trans-bus-time:nth-of-type(7) {
+.cascade:nth-of-type(7), .widget-element:nth-of-type(7), .trans-bus-time:nth-of-type(7) {
   animation-delay: 0.9s; }
 
-.cascade:nth-of-type(8), .trans-bus-time:nth-of-type(8) {
+.cascade:nth-of-type(8), .widget-element:nth-of-type(8), .trans-bus-time:nth-of-type(8) {
   animation-delay: 1.05s; }
 
-.cascade:nth-of-type(9), .trans-bus-time:nth-of-type(9) {
+.cascade:nth-of-type(9), .widget-element:nth-of-type(9), .trans-bus-time:nth-of-type(9) {
   animation-delay: 1.2s; }
 
-.cascade:nth-of-type(10), .trans-bus-time:nth-of-type(10) {
+.cascade:nth-of-type(10), .widget-element:nth-of-type(10), .trans-bus-time:nth-of-type(10) {
   animation-delay: 1.35s; }
 
-.cascade:nth-of-type(11), .trans-bus-time:nth-of-type(11) {
+.cascade:nth-of-type(11), .widget-element:nth-of-type(11), .trans-bus-time:nth-of-type(11) {
   animation-delay: 1.5s; }
 
-.cascade:nth-of-type(12), .trans-bus-time:nth-of-type(12) {
+.cascade:nth-of-type(12), .widget-element:nth-of-type(12), .trans-bus-time:nth-of-type(12) {
   animation-delay: 1.65s; }
 
-.cascade:nth-of-type(13), .trans-bus-time:nth-of-type(13) {
+.cascade:nth-of-type(13), .widget-element:nth-of-type(13), .trans-bus-time:nth-of-type(13) {
   animation-delay: 1.8s; }
 
-.cascade:nth-of-type(14), .trans-bus-time:nth-of-type(14) {
+.cascade:nth-of-type(14), .widget-element:nth-of-type(14), .trans-bus-time:nth-of-type(14) {
   animation-delay: 1.95s; }
 
-.cascade:nth-of-type(15), .trans-bus-time:nth-of-type(15) {
+.cascade:nth-of-type(15), .widget-element:nth-of-type(15), .trans-bus-time:nth-of-type(15) {
   animation-delay: 2.1s; }
 
-.cascade:nth-of-type(16), .trans-bus-time:nth-of-type(16) {
+.cascade:nth-of-type(16), .widget-element:nth-of-type(16), .trans-bus-time:nth-of-type(16) {
   animation-delay: 2.25s; }
 
-.cascade:nth-of-type(17), .trans-bus-time:nth-of-type(17) {
+.cascade:nth-of-type(17), .widget-element:nth-of-type(17), .trans-bus-time:nth-of-type(17) {
   animation-delay: 2.4s; }
 
-.cascade:nth-of-type(18), .trans-bus-time:nth-of-type(18) {
+.cascade:nth-of-type(18), .widget-element:nth-of-type(18), .trans-bus-time:nth-of-type(18) {
   animation-delay: 2.55s; }
 
-.cascade:nth-of-type(19), .trans-bus-time:nth-of-type(19) {
+.cascade:nth-of-type(19), .widget-element:nth-of-type(19), .trans-bus-time:nth-of-type(19) {
   animation-delay: 2.7s; }
 
-.cascade:nth-of-type(20), .trans-bus-time:nth-of-type(20) {
+.cascade:nth-of-type(20), .widget-element:nth-of-type(20), .trans-bus-time:nth-of-type(20) {
   animation-delay: 2.85s; }
 
-.trans-stop {
+.widget-element {
   border: 1px solid white;
   width: 17em;
   padding: 10px;
-  margin: 10px; }
+  margin: 10px;
+  font-weight: bold; }
+  .widget-element .event-title {
+    font-size: 22px; }
+  .widget-element .event-date {
+    display: inline; }
+  .widget-element .event-duration {
+    float: right;
+    margin: 0px;
+    text-align: right; }
+  .widget-element .event-location {
+    font-weight: bold;
+    text-align: left;
+    margin-top: 5px;
+    margin-bottom: 0px;
+    border-top: 1px solid rgba(255, 255, 255, 0.3); }
+  .widget-element h2 {
+    text-align: left; }
+  .widget-element .trans-direction {
+    margin: 0;
+    text-align: left; }
+  .widget-element .trans-lines {
+    text-align: left;
+    color: white;
+    font-weight: bold;
+    margin: 0; }
 
 .selected {
   background-color: white !important;
   color: black !important; }
   .selected p {
     color: black !important; }
-
-.trans-stop h2 {
-  text-align: left; }
-
-.trans-stop .trans-direction {
-  margin: 0;
-  text-align: left; }
-
-.trans-stop .trans-lines {
-  text-align: left;
-  color: white;
-  font-weight: bold;
-  margin: 0; }
 
 .trans-bus-time {
   font-weight: bold;

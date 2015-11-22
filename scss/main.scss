@@ -121,11 +121,48 @@ p{
 .cascade:nth-of-type(19){ animation-delay: 2.70s }
 .cascade:nth-of-type(20){ animation-delay: 2.85s }
 
-.trans-stop{
+.widget-element{
+  @extend .cascade;
   border: 1px solid white;
   width: 17em;
   padding: 10px;
   margin: 10px;
+  font-weight: bold;
+
+  .event-title{
+    font-size: 22px
+  }
+
+  .event-date{
+    display: inline;
+  }
+
+  .event-duration{
+    float: right;
+    margin: 0px;
+    text-align: right;
+  }
+
+  .event-location{
+    font-weight: bold;
+    text-align: left;
+    margin-top: 5px;
+    margin-bottom: 0px;
+    border-top: 1px solid rgba(255,255,255,.3);
+  }
+  h2{
+    text-align: left;
+  }
+  .trans-direction{
+    margin: 0;
+    text-align: left;
+  }
+  .trans-lines{
+    text-align: left;
+    color: white;
+    font-weight: bold;
+    margin: 0;
+  }
 }
 .selected{
   background-color: white !important;
@@ -135,19 +172,7 @@ p{
   }
 }
 
-.trans-stop h2{
-  text-align: left;
-}
-.trans-stop .trans-direction{
-  margin: 0;
-  text-align: left;
-}
-.trans-stop .trans-lines{
-  text-align: left;
-  color: white;
-  font-weight: bold;
-  margin: 0;
-}
+
 
 .trans-bus-time{
   @extend .cascade;

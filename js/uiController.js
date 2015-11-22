@@ -5,22 +5,33 @@ uiController = (function () {
     var mainTextContainer = document.getElementById("main-text-container"),
         weatherContainer = document.getElementById("weather-container"),
         widgetsContainer = document.getElementById("widgets-container"),
-        widgetsContainerStatus = {
+        uiStatus = {
             'scroll': 0,
             'lastWidgetTime': new Date()
         },
         FADE_DURATION = 0.4,
-        WIDGET_DURATION = 60000;
+        WIDGET_DURATION = 60000,
+        MAIN_TEXT_DURATION = 15000;
+
+    function removeMainText(elem) {
+        var oldElem = elem || mainTextContainer.firstElementChild;
+        if (oldElem) {
+            oldElem.className = "animated fadeOut";
+            setTimeout(function () {
+                mainTextContainer.removeChild(oldElem);
+            }, 1000);
+        }
+    }
 
     function scrollWidgets(val) {
         if (val === 0) { //Reset scroll
-            widgetsContainerStatus.scroll = 0;
+            uiStatus.scroll = 0;
         } else if (val === undefined) { //Scroll a bit
-            widgetsContainerStatus.scroll -= 500;
+            uiStatus.scroll -= 500;
         } else { //Scroll an exact amount
-            widgetsContainerStatus.scroll -= val;
+            uiStatus.scroll -= val;
         }
-        widgetsContainer.style.transform = 'translateY(' + widgetsContainerStatus.scroll + 'px)';
+        widgetsContainer.style.transform = 'translateY(' + uiStatus.scroll + 'px)';
     }
 
     function removeWidgets() {
@@ -43,7 +54,8 @@ uiController = (function () {
     function setWidget(elem, stayInScreen) {
         var delay = removeWidgets() ? FADE_DURATION * 1000 : 0,
             insertTime = new Date();
-        widgetsContainerStatus.lastWidgetTime = insertTime;
+        removeMainText();
+        uiStatus.lastWidgetTime = insertTime;
         setTimeout(function () {
             elem.classList.add('widget');
             elem.classList.add('animated');
@@ -54,7 +66,7 @@ uiController = (function () {
         //Auto remove widget
         if (!stayInScreen) {
             setTimeout(function () {
-                if (widgetsContainerStatus.lastWidgetTime === insertTime) {
+                if (uiStatus.lastWidgetTime === insertTime) {
                     removeWidgets();
                 }
             }, WIDGET_DURATION);
@@ -64,7 +76,7 @@ uiController = (function () {
     function createStopCard(stopObj, showLines) {
         var elem, title, direction, lines;
         elem = document.createElement('div');
-        elem.classList.add("trans-stop");
+        elem.classList.add("widget-element");
         elem.classList.add("cascade");
 
         title = document.createElement('h2');
@@ -86,8 +98,6 @@ uiController = (function () {
         return elem;
     }
 
-
-
     return {
         setWeather: function (status) {
             weatherContainer.style.animationName = 'fadeOut';
@@ -100,16 +110,18 @@ uiController = (function () {
         //
         // },
         setMainText: function (text) {
-            var oldElem = mainTextContainer.firstElementChild,
-                newElem = document.createElement("h1");
-            oldElem.className = "animated fadeOut";
-            setTimeout(function () {
-                mainTextContainer.removeChild(oldElem);
-            }, 1000);
+            var newElem = document.createElement("h1");
+            removeMainText();
+            removeWidgets();
             newElem.innerHTML = text;
             newElem.style.animationDuration = FADE_DURATION + 's';
             newElem.className = "animated fadeIn";
             mainTextContainer.appendChild(newElem);
+
+            setTimeout(function () {
+                removeMainText(newElem);
+            }, MAIN_TEXT_DURATION);
+
         },
         // minimiseMainText: function () {
         //
@@ -153,34 +165,45 @@ uiController = (function () {
                 eventItem,
                 duration,
                 event,
+                i,
+                start,
+                end,
+                diff,
+                date,
                 calendarContainer = document.createElement('div');
-            for (var i = 0; i < events.length; i++) {
+            for (i = 0; i < events.length; i++) {
                 event = events[i];
                 eventItem = document.createElement('div');
-                eventItem.classList.add('trans-stop');
-                if(event.summary){
+                eventItem.classList.add('widget-element');
+                if (event.summary) {
                     title = document.createElement('h2');
                     title.innerHTML = event.summary;
-                    eventItem.append(title);
-                }
-                if(event.location){
-                    location = document.createElement('p');
-                    eventItem.append(location);
+                    title.classList.add('event-title');
+                    eventItem.appendChild(title);
                 }
 
                 start = event.start.dateTime;
                 end = event.end.dateTime;
                 diff = moment(end).diff(start);
 
+                duration = document.createElement('p');
+                duration.innerHTML = moment.duration(diff).humanize(); //Duration time in human words
+                duration.classList.add('event-duration');
+                eventItem.appendChild(duration);
+
                 date = document.createElement('p');
                 date.innerHTML = moment(start).calendar();
-                eventItem.append(date);
+                date.classList.add('event-date');
+                eventItem.appendChild(date);
 
-                duration = document.createElement('p');
-                duration.innerHTML = diff.humanize();
-                eventItem.append(duration);
+                if (event.location) {
+                    location = document.createElement('p');
+                    location.innerHTML = event.location;
+                    location.classList.add('event-location');
+                    eventItem.appendChild(location);
+                }
 
-                calendarContainer.append(eventItem);
+                calendarContainer.appendChild(eventItem);
             }
             setWidget(calendarContainer);
         }
