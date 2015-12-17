@@ -30,8 +30,8 @@ app.on('ready', function () {
         // Browser window options. See all at http://electron.atom.io/docs/v0.33.0/api/browser-window/
         width: 1000,
         height: 700,
-        kiosk: true,
-        frame: false,
+        // kiosk: true,
+        // frame: false,
     });
 
     // and load the index.html of the app.

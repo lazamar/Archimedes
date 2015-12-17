@@ -3,3 +3,5 @@
 - Show loading symbol
 - Calculate relevant time to show weather.
 - Calculate time to show calendar appointments
+- Instagram?
+- Twitter?

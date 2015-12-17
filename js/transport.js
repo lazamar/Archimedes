@@ -1,6 +1,7 @@
 var prop, transport;
 
 transport = (function () {
+  "use strict";
     var searchRadius = 500;
 
     function buildStopSearchUrl(lat, lon) {
