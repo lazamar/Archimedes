@@ -1,7 +1,7 @@
 
 
 (function () {
-  "use strict";
+  // "use strict";
   var request = require('request'), // Module to make AJAX requests.
     geoService = require('./js/geo.js'),
     transport = require('./js/transport.js'),
@@ -238,20 +238,21 @@
   }
 
   //Hourly check on proactive information display
-  (function (scope) {
+  (function () {
     var min = 60 - new Date().getMinutes(), //Minutes to next hour
       mil = min * 1000; // Miliseconds to next hour
     function checkPredictions() {
       var i, toExecute = usageLogger.predict();
       for (i = 0; i < toExecute.length; i++) {
-        scope[toExecute[i]]();
+        eval(toExecute[i] + '()');
       }
     }
+    ch = checkPredictions;
     checkPredictions();
     setTimeout(function () {
       setInterval(checkPredictions, 60000); //Check Predictions every hour.
     }, mil);
-  }(this));//Pass a reference to the current object
+  }());//Pass a reference to the current object
 
   //Voice recognition bit.
   (function () {
