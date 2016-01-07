@@ -1,7 +1,7 @@
 
 
 (function () {
-  // "use strict";
+  "use strict";
   var request = require('request'), // Module to make AJAX requests.
     geoService = require('./js/geo.js'),
     transport = require('./js/transport.js'),
@@ -231,7 +231,7 @@
       break;
     case /clear\s.*screen/gi.test(question):
       uiController.clearScreen();
-      say('There you go, nice and shiny.')
+      say('There you go, nice and shiny.');
       break;
     default:
       askChatBot(question).then(function (response) {
@@ -246,22 +246,22 @@
     // question = arguments[0];
   }
 
-  //Hourly check on proactive information display
-  (function () {
-    var min = 60 - new Date().getMinutes(), //Minutes to next hour
-      mil = min * 1000; // Miliseconds to next hour
-    function checkPredictions() {
-      var i, toExecute = usageLogger.predict();
-      for (i = 0; i < toExecute.length; i++) {
-        eval(toExecute[i] + '()');
-      }
-    }
-    ch = checkPredictions;
-    checkPredictions();
-    setTimeout(function () {
-      setInterval(checkPredictions, 60000); //Check Predictions every hour.
-    }, mil);
-  }());//Pass a reference to the current object
+  // //Hourly check on proactive information display
+  // (function () {
+  //   var min = 60 - new Date().getMinutes(), //Minutes to next hour
+  //     mil = min * 1000; // Miliseconds to next hour
+  //   function checkPredictions() {
+  //     var toExecute = usageLogger.predict();
+  //     if (toExecute.length > 0) {
+  //       eval(toExecute[0] + '()');
+  //     }
+  //   }
+  //
+  //   checkPredictions();
+  //   setTimeout(function () {
+  //     setInterval(checkPredictions, 60000); //Check Predictions every hour.
+  //   }, mil);
+  // }());//Pass a reference to the current object
 
   //Voice recognition bit.
   (function () {
