@@ -39,6 +39,9 @@
   function say(astring) {
     astring = astring.replace(/Chomsky/gi, "Archimedes");
     astring = astring.replace(/Peter/gi, "Marcelo");
+    astring = astring.replace(/Romney Marsh, kent/gi, "London");
+    astring = astring.replace(/1 January 2004/gi, "July 2015");
+
     responsiveVoice.speak(astring, "UK English Male");
     uiController.setMainText(astring);
   }
@@ -185,6 +188,7 @@
 
   // ========= Question handling ============
   function handleQuestion(question) {
+    uiController.showLoader();
     var answerFuncName, matches, numberPart, number, i;
     switch (true) {
       //Show nearby bus stops
@@ -225,6 +229,10 @@
         scrollWidgets(-500);
       }
       break;
+    case /clear\s.*screen/gi.test(question):
+      uiController.clearScreen();
+      say('There you go, nice and shiny.')
+      break;
     default:
       askChatBot(question).then(function (response) {
         say(response);
@@ -234,6 +242,7 @@
     if (answerFuncName) {
       usageLogger.log(answerFuncName);
     }
+    uiController.hideLoader();
     // question = arguments[0];
   }
 

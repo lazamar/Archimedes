@@ -1,8 +1,6 @@
 @import 'animate';
 // @import 'swiss';
 
-
-
 @font-face {
   font-family: 'Alegreya-Thin';
   src: url('../resources/fonts/AlegreyaSansSC-Thin.ttf');
@@ -12,14 +10,27 @@ body{
   font-family: 'Alegreya-Thin';
   color: white;
   overflow: hidden;
+  cursor: none !important;
+}
+.loader {
+  position: absolute;
+  top: 100px;
+  left: 0px;
+  right: 0px;
+  margin: auto;
+  transition: opacity .2s ease;
+  opacity: 0;
 }
 
+#main-text-container{
+  cursor: none !important;
+}
 #main-text-container h1{
-  width: 17em;
+  width: 80%;
   height: 3em;
   position: absolute;
   margin: auto;
-  top: 0px;
+  top: 0;
   bottom: 0;
   left: 0;
   right: 0;
@@ -62,8 +73,8 @@ p{
 }
 #weather-container{
   position: fixed;
-  top: 0px;
-  left: 0px;
+  top: 20px;
+  left: 20px;
   padding: 20px;
   // animation-name: fade-in;
   animation-duration: 3s;
@@ -83,8 +94,8 @@ p{
 
 #widgets-container{
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 30px;
+  right: 50px;
   width: auto;
   height: auto;
   transition: transform 1s ease-out;
@@ -171,8 +182,6 @@ p{
     color: black !important;
   }
 }
-
-
 
 .trans-bus-time{
   @extend .cascade;

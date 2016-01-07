@@ -12,6 +12,13 @@ uiController = (function () {
         FADE_DURATION = 0.4,
         WIDGET_DURATION = 60000,
         MAIN_TEXT_DURATION = 15000;
+    function showLoader() {
+      document.querySelector('#loader').style.opacity = 1;
+    }
+
+    function hideLoader() {
+      document.querySelector('#loader').style.opacity = 0;
+    }
 
     function removeMainText(elem) {
         var oldElem = elem || mainTextContainer.firstElementChild;
@@ -43,7 +50,9 @@ uiController = (function () {
             lastWidget.classList.add('animated');
             lastWidget.classList.add('fadeOutUp');
             setTimeout(function () {
-                widgetsContainer.removeChild(lastWidget);
+                if (widgetsContainer && lastWidget) {
+                  widgetsContainer.removeChild(lastWidget);
+                }
                 scrollWidgets(0);
             }, FADE_DURATION * 1000);
             somethingToRemove = true;
@@ -73,6 +82,11 @@ uiController = (function () {
         }
     }
 
+    function clearScreen() {
+      removeMainText();
+      removeWidgets();
+    }
+
     function createStopCard(stopObj, showLines) {
         var elem, title, direction, lines;
         elem = document.createElement('div');
@@ -99,6 +113,9 @@ uiController = (function () {
     }
 
     return {
+        showLoader: showLoader,
+        hideLoader: hideLoader,
+        clearScreen: clearScreen,
         setWeather: function (status) {
             weatherContainer.style.animationName = 'fadeOut';
             weatherContainer.children[0].firstElementChild.className = "wi wi-" + status.icon + " wi-fi";

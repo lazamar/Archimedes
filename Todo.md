@@ -5,3 +5,6 @@
 - Calculate time to show calendar appointments
 - Instagram?
 - Twitter?
+- Loading single
+- help
+- clear
